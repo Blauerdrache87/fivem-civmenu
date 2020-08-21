@@ -12,3 +12,4 @@ Siemanko
  update 21.08 jesli macie blad z mysql to dodajcie to:
  '@mysql-async/lib/MySQL.lua'
      
+jako server script i client script
