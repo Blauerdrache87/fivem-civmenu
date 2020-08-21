@@ -1,15 +1,12 @@
-# dowod
-Fivem Dowód Skrypt
+Fivem Dowód
 
-DOWÓD + WIZYTÓWKA + JAK MASZ JOBA POLICE TO ODZNAKA
-
-Dodaj start dowod lub ensure dowod
-
-Wszystko powinno działać.
-
-Siemanko
- <p></p>
- update 21.08 jesli macie blad z mysql to dodajcie to:
- '@mysql-async/lib/MySQL.lua'
-     
-jako server script i client script
+<p></p>
+https://szymczakovv.pl/
+<p></p>
+https://twitch.tv/szymczakovv
+<p></p>
+https://instagram.com/szymczakovv/
+<p></p>
+https://steamcommunity.com/id/szymczakovv
+<p></p>
+https://discord.gg/wrSqK6k/
