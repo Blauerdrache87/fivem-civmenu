@@ -7,7 +7,7 @@
 Fivem Dowód
 
 Info: często są błędy z tym dowodem wprowadziłem aktualizację do resource.lua
-i pobierzcie najlepiej mojego mysql-asynca! http://szymczakovv.pl/pliki/mysql-async.rar
+i pobierzcie najlepiej mojego mysql-asynca! http://szymczakovv.pl/pliki/mysql-async
 
 <p></p>
 https://szymczakovv.pl/
