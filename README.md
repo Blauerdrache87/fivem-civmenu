@@ -6,8 +6,7 @@
 
 Fivem Dowód
 
-Info: często są błędy z tym dowodem wprowadziłem aktualizację do resource.lua
-i pobierzcie najlepiej mojego mysql-asynca! http://szymczakovv.pl/pliki/mysql-async.rar
+It's version, new version evidence v2: https://github.com/szymczakovv/fivem-dowod/releases/tag/%23v2
 
 <p></p>
 https://szymczakovv.pl/
