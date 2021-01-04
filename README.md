@@ -7,7 +7,7 @@
 
 Fivem Dowód
 
-It's first version, new version evidence v2: https://github.com/szymczakovv/fivem-dowod/releases/tag/%23v2
+It's first version, new version evidence 2.1: https://github.com/szymczakovv/fivem-dowod/releases/tag/%23v2.1
 
 <p></p>
 https://szymczakovv.pl/
