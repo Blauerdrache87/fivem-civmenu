@@ -7,12 +7,8 @@
 ESX = nil
 
 local PlayerData = {}
+local control = 121, -- Insert
 
-local cfgme = {
-
-    pressed = 121, -- Insert
-
-}
 
 Citizen.CreateThread(function()
     while ESX == nil do
@@ -39,7 +35,7 @@ end)
 Citizen.CreateThread(function()
   while true do
     Citizen.Wait(1)
-      if IsControlJustReleased(0, cfgme.pressed) then
+      if IsControlJustReleased(0, control) then
         MenuObywatela()
       end
   end
@@ -149,10 +145,10 @@ function OpenMenuDokumenty()
         },
         function(data, menu)
         if data.current.value == 'dowod' then
-      TriggerServerEvent('esx_civmenu:dowod')
+      ExecuteCommand('dowod')
       ESX.UI.Menu.CloseAll()
       elseif data.current.value == 'wiz' then
-        TriggerServerEvent('esx_civmenu:wizytowka')
+        ExecuteCommand('wizytowka')
       ESX.UI.Menu.CloseAll()				
             end
         end,
@@ -281,25 +277,25 @@ end
         },
             function(data2, menu2)
               if data2.current.value == 'ubezpieczenie' then
-                TriggerServerEvent('esx_civmenu:ubezpieczenie')
+                ExecuteCommand('ubezpieczenie')
               end
                 if data2.current.value == 'lspd' then
-                 TriggerServerEvent('esx_civmenu:lspd')
+                  ExecuteCommand('lspd')
                 end
                 if data2.current.value == 'lspdubez' then
-                 TriggerServerEvent('esx_civmenu:ubezpieczenielspd')
+                  ExecuteCommand('lspdubezpieczenie')
                 end
   
                 if data2.current.value == 'ems' then 
-                  TriggerServerEvent('esx_civmenu:ems')
+                  ExecuteCommand('ems')
                 end
                 
                 if data2.current.value == 'lscs' then
-                  TriggerServerEvent('esx_civmenu:mecano')
+                  ExecuteCommand('lscs')
                 end
 
                 if data2.current.value == 'lssd' then
-                  TriggerServerEvent('esx_civmenu:lssd')
+                  ExecuteCommand('lssd')
                 end
   
             end,
