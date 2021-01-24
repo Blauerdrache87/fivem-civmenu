@@ -160,10 +160,19 @@ TriggerEvent('es:addCommand', 'wizytowka', function(source, args, user)
 		
 		
 	 local name = getIdentity(source)
+	 local myjob
+		if job.name == 'police' then
+			myjob = 'LSPD'
+		elseif job.name == 'ambulance' then
+			myjob = 'EMS'
+		elseif job.name == 'taxi' then
+			myjob = 'Firma Taksówkarska'
+		elseif job.name == 'mecano' then
+			myjob = 'Mechanik'
+		end
 		
 		
-		
-	TriggerClientEvent('esx:dowod_wiz', -1,_source, name.firstname..' '..name.lastname, 'Numer Telefonu: ~y~'..name.phone_number, '')
+	TriggerClientEvent('esx:dowod_wiz', -1,_source, 'Praca:' ..myjob, name.firstname..' '..name.lastname, 'Numer Telefonu: ~y~'..name.phone_number, '')
 	TriggerClientEvent("pokazujewiz", -1, _source, name.firstname .. " - ".. name.phone_number, table.concat(args, " "))
 end)
 
