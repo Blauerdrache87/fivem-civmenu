@@ -7,9 +7,7 @@
 Fivem esx_civilian_menu 2.2 with Police/Sheriff Badge, Insurance, Badge for Mecano and EMS, [etc.]
 Jeżeli chcesz mieć w pełni działające odznaki musisz nadać callsing np. [Yankee-01] aby to uczynić dodaj do bazy danych następujęce rzeczy;
 ```
-CREATE TABLE `users` (
-  `job_callsing` text COLLATE utf8mb4_bin DEFAULT NULL,
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+ALTER TABLE `users` ADD COLUMN `job_callsing` TEXT DEFAULT '{}';
 ```
 Potem nadaj graczu callsing przykładowo wyszukaj kogoś po nicku i wpisz Yankee-01 (Nie potrzebne jest dawanie kwadratowych nawiasów aby to wyglądało ładnie, ponieważ jest to zaimplementowanie po stronie skryptu)
 
