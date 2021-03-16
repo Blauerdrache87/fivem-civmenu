@@ -18,7 +18,6 @@ function getIdentity(license)
 	local result = MySQL.Sync.fetchAll("SELECT firstname, lastname, dateofbirth, phone_number, job, job_grade, job_callsing FROM users WHERE identifier = @identifier", {['@identifier'] = identifier})
 	if result[1] ~= nil then
 		local identity = result[1]
-		local badge = json.decode(identity.job_id)
 
 		return {
 			firstname = identity['firstname'],
