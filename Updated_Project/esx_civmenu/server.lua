@@ -1,8 +1,8 @@
 --[ esx_civmenu - powered by: https://szymczakovv.pl ]--
 -- Nazwa: esx_civmenu
 -- Autor: szymczakovv#1937
--- Data: 05/01/2021
--- Wersja: 2.1
+-- Data: 16/03/2021
+-- Wersja: 3.0
 
 ESX = nil
 
@@ -13,23 +13,21 @@ local katc = false
 local jestb = 'nil'
 local jestzdrowie = nil
 local jestoc = nil
-function getIdentity(source)
-	local identifier = GetPlayerIdentifiers(source)[1]
-	local result = MySQL.Sync.fetchAll("SELECT * FROM users WHERE identifier = @identifier", {['@identifier'] = identifier})
+function getIdentity(license)
+	local identifier = license
+	local result = MySQL.Sync.fetchAll("SELECT firstname, lastname, dateofbirth, phone_number, job, job_grade, job_callsing FROM users WHERE identifier = @identifier", {['@identifier'] = identifier})
 	if result[1] ~= nil then
 		local identity = result[1]
+		local badge = json.decode(identity.job_id)
 
 		return {
-			identifier = identity['identifier'],
 			firstname = identity['firstname'],
 			lastname = identity['lastname'],
-			name = identity['name'],
 			dateofbirth = identity['dateofbirth'],
-			sex = identity['sex'],
-			height = identity['height'],
 			phone_number = identity['phone_number'],
 			job = identity['job'],
 			job_grade = identity['job_grade'],
+			account_number = identity['account_number'],
 			job_callsing = identity['job_callsing']
 
                         
@@ -40,10 +38,11 @@ function getIdentity(source)
 end
 
 function getlicenseA(source)
-	local identifier = GetPlayerIdentifiers(source)[1]
+	local _source = source
+	local xPlayer = ESX.GetPlayerFromId(_source)
     local result = MySQL.Sync.fetchAll("SELECT * FROM user_licenses WHERE type = @type and owner = @owner",
     {
-      ['@owner']   = identifier,
+      ['@owner']   = xPlayer.identifier,
       ['@type'] = 'drive_bike'
 
     })
@@ -55,10 +54,11 @@ function getlicenseA(source)
 end
 
 function getlicenseB(source)
-	local identifier = GetPlayerIdentifiers(source)[1]
+	local _source = source
+	local xPlayer = ESX.GetPlayerFromId(_source)
     local result = MySQL.Sync.fetchAll("SELECT * FROM user_licenses WHERE type = @type and owner = @owner",
     {
-      ['@owner']   = identifier,
+      ['@owner']   = xPlayer.identifier,
       ['@type'] = 'drive'
 
     })
@@ -70,10 +70,11 @@ function getlicenseB(source)
 end
 
 function getlicenseC(source)
-	local identifier = GetPlayerIdentifiers(source)[1]
+	local _source = source
+	local xPlayer = ESX.GetPlayerFromId(_source)
     local result = MySQL.Sync.fetchAll("SELECT * FROM user_licenses WHERE type = @type and owner = @owner",
     {
-      ['@owner']   = identifier,
+      ['@owner']   = xPlayer.identifier,
       ['@type'] = 'drive_truck'
 
     })
@@ -85,12 +86,13 @@ function getlicenseC(source)
 end
 
 function getlicenseW(source)
-	local identifier = GetPlayerIdentifiers(source)[1]
-    local result = MySQL.Sync.fetchAll("SELECT * FROM user_licenses WHERE type = @type and owner = @owner",
+	local _source = source
+	local xPlayer = ESX.GetPlayerFromId(_source)
+    local result = MySQL.Sync.fetchAll("SELECT * FROM user_licenses WHERE type = @type and owner = @owner and label = @label",
     {
-      ['@owner']   = identifier,
-      ['@type'] = 'weapon'
-
+		['@type'] = 'weapon',
+		['@owner']   = xPlayer.identifier,
+		['@label'] = 'Licencja Broń',
     })
 	if result[1] ~= nil then
         jestw = '~g~Tak~n~ ~s~'
@@ -99,12 +101,14 @@ function getlicenseW(source)
 	end
 end
 
+
 function getlicenseZdrowie(source)
-	local identifier = GetPlayerIdentifiers(source)[1]
+	local _source = source
+	local xPlayer = ESX.GetPlayerFromId(_source)
 
 local result = MySQL.Sync.fetchAll("SELECT * FROM user_licenses WHERE type = @type and owner = @owner",
     {
-      ['@owner']   = identifier,
+      ['@owner']   = xPlayer.identifier,
 	  ['@type'] = 'ems_insurance',
 
     })
@@ -113,31 +117,42 @@ local result = MySQL.Sync.fetchAll("SELECT * FROM user_licenses WHERE type = @ty
 	if result[1] ~= nil then
 
 ubeznw = true
-jestzdrowie = '~g~Tak~s~'
+jestzdrowie = '~g~NW~s~'
 	else
-		jestzdrowie = '~r~Nie~s~'
+		jestzdrowie = '~r~NW~s~'
 	end
 end
 
+function GetCharacterName(source)
+	local _source = source
+	local xPlayer = ESX.GetPlayerFromId(_source)
+	local result = MySQL.Sync.fetchAll('SELECT * FROM users WHERE identifier = @identifier',
+	{
+	['@identifier'] = xPlayer.identifier
+	})
+	return result[1].firstname .. ' ' .. result[1].lastname
+end
+
 function getlicenseOC(source)
-	local identifier = GetPlayerIdentifiers(source)[1]
+	local _source = source
+	local xPlayer = ESX.GetPlayerFromId(_source)
 
 local result = MySQL.Sync.fetchAll("SELECT * FROM user_licenses WHERE type = @type and owner = @owner",
     {
-      ['@owner']   = identifier,
+      ['@owner']   = xPlayer.identifier,
       ['@type'] = 'oc_insurance'
 
     })
 
 
-	if result[1] ~= nil then
-
-ubezoc = true
-jestoc = '~g~Tak~s~'
+if result[1] ~= nil then
+	ubezoc = true
+	jestoc = '~g~OC~s~'
 	else
-		jestoc = '~r~Nie~s~'
+		jestoc = '~r~OC~s~'
 	end
 end
+
 
 RegisterServerEvent('dowod')
 AddEventHandler('dowod', function()
