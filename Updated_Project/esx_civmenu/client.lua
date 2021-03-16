@@ -100,7 +100,6 @@ function MenuObywatela()
       {label = '['..GetPlayerServerId(i)..'] - '..GetPlayerName(PlayerId())..'', value = 'none'},
       {label = '-------------', value = 'none'},
       {label = 'Dokumenty Osobiste', value = 'dokumenty'},
-      {label = 'Legitymacje', value = 'legitymacje'},
       {label = 'Dodatkowe', value = 'dodatki'},
     }
   
@@ -126,22 +125,29 @@ end
 
 function OpenMenuDokumenty()
     ESX.UI.Menu.CloseAll()
+            local elements = {
+              {label = 'Dowód', value = 'dowod'},
+              {label = 'Wizytówka', value = 'wiz'},
+            }
+	if PlayerData.job ~= nil and PlayerData.job.name == 'police' then
+          table.insert(elements,{label = 'Odznaka LSPD', value = 'lspd'})
+        end
     ESX.UI.Menu.Open(
         'default', GetCurrentResourceName(), 'dokumenty',
         {
 			align    = 'center',
             title    = 'Dokumenty Osobiste',
-            elements = {
-              {label = 'Dowód', value = 'dowod'},
-              {label = 'Wizytówka', value = 'wiz'},
-            }
+		elements = elements
         },
         function(data, menu)
         if data.current.value == 'dowod' then
-      ExecuteCommand('dowod')
+      TriggerServerEvent('dowod')
       ESX.UI.Menu.CloseAll()
       elseif data.current.value == 'wiz' then
-        ExecuteCommand('wizytowka')
+        TriggerServerEvent('wizytowka')
+      elseif data.current.value == 'lspd' then
+	TriggerServerEvent('odznaka')		
+				
       ESX.UI.Menu.CloseAll()				
             end
         end,
@@ -236,69 +242,6 @@ end
     end
     UnregisterPedheadshot(mugshot)
   end)
-
-
-  function OpenMenuLegitymacje()
-  
-    local elements = {
-        {label = 'Ubezpieczenie',     value = 'ubezpieczenie'},
-        }
-  
-        if PlayerData.job ~= nil and PlayerData.job.name == 'police' then
-          table.insert(elements,{label = 'Odznaka LSPD', value = 'lspd'})
-        end
-  
-        if PlayerData.job ~= nil and PlayerData.job.name == 'ambulance' then
-          table.insert(elements,{label = 'Legitymacja EMS', value = 'ems'})
-        end
-
-        if PlayerData.job ~= nil and PlayerData.job.name == 'police' then
-          table.insert(elements,{label = 'Ubezpieczenie Służbowe', value = 'lspdubez'})
-        end
-
-        if PlayerData.job ~= nil and PlayerData.job.name == 'mecano' then
-          table.insert(elements,{label = 'Plakietka LSCS', value = 'lscs'})
-        end
-        
-        if PlayerData.job ~= nil and PlayerData.job.name == 'sheriff' then
-          table.insert(elements, {label = 'Odznaka LSSD', value = 'lssd'})
-        end
-    ESX.UI.Menu.CloseAll()
-    ESX.UI.Menu.Open(
-      'default', GetCurrentResourceName(), 'dokumenty',
-      {
-        title    = 'Legitymacje',
-        align    = 'center',
-        elements = elements
-        },
-            function(data2, menu2)
-              if data2.current.value == 'ubezpieczenie' then
-                ExecuteCommand('ubezpieczenie')
-              end
-                if data2.current.value == 'lspd' then
-                  ExecuteCommand('lspd')
-                end
-                if data2.current.value == 'lspdubez' then
-                  ExecuteCommand('lspdubezpieczenie')
-                end
-  
-                if data2.current.value == 'ems' then 
-                  ExecuteCommand('ems')
-                end
-                
-                if data2.current.value == 'lscs' then
-                  ExecuteCommand('lscs')
-                end
-
-                if data2.current.value == 'lssd' then
-                  ExecuteCommand('lssd')
-                end
-  
-            end,
-            function(data, menu)
-            menu.close()
-          end)
-  end 
 
 
 RegisterNetEvent('esx:dowod_pokazdowod')
