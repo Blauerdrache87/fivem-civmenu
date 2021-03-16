@@ -46,15 +46,12 @@ AddEventHandler('pokazujedowod', function(id, name, message)
   local myId = PlayerId()
   local pid = GetPlayerFromServerId(id)
   if pid == myId then
-       TriggerEvent('chat:addMessage', {
-        template = '<div style="padding: 0.4vw; margin: 0.5vw; font-size: 15px; background-color: rgba(72, 147, 153, 0.4); border-radius: 3px;"><i class="fas fa-user-circle"></i>&nbsp;{0}</div>',
-        args = {'Obywatel ['  .. id .. ']: Pokazuje Dowod Osobisty: ' .. name}
-    })
-  elseif GetDistanceBetweenCoords(GetEntityCoords(GetPlayerPed(myId)), GetEntityCoords(GetPlayerPed(pid)), true) < 19.999 then
-         TriggerEvent('chat:addMessage', {
-        template = '<div style="padding: 0.4vw; margin: 0.5vw; font-size: 15px; background-color: rgba(72, 147, 153, 0.4); border-radius: 3px;"><i class="fas fa-user-circle"></i>&nbsp;{0}</div>',
-        args = {'Obywatel ['  .. id .. ']: Pokazuje Dowod Osobisty: ' .. name}
-    })
+
+    TriggerEvent('chatMessage',"^6Obywatel["  .. id .. "]^0:^6 Pokazuje Dowod Osobisty: " .. name )
+  elseif GetDistanceBetweenCoords(GetEntityCoords(Citizen.InvokeNative(0x43A66C31C68491C0, myId)), GetEntityCoords(Citizen.InvokeNative(0x43A66C31C68491C0, pid)), true) <= 19.999 then
+    if Citizen.InvokeNative(0xB8DFD30D6973E135, pid) then    
+      TriggerEvent('chatMessage',"^6Obywatel["  .. id .. "]^0:^6 Pokazuje Dowod Osobisty: " .. name )
+    end
   end
 end)
 
@@ -63,35 +60,30 @@ AddEventHandler('pokazujewiz', function(id, name, message)
   local myId = PlayerId()
   local pid = GetPlayerFromServerId(id)
   if pid == myId then
-          TriggerEvent('chat:addMessage', {
-        template = '<div style="padding: 0.4vw; margin: 0.5vw; font-size: 15px; background-color: rgba(72, 147, 153, 0.4); border-radius: 3px;"><i class="fas fa-user-circle"></i>&nbsp;{0}</div>',
-        args = {'Obywatel ['  .. id .. ']: Pokazuje Wizytówkę: ' .. name}
-    })
-  elseif GetDistanceBetweenCoords(GetEntityCoords(GetPlayerPed(myId)), GetEntityCoords(GetPlayerPed(pid)), true) < 19.999 then
-           TriggerEvent('chat:addMessage', {
-        template = '<div style="padding: 0.4vw; margin: 0.5vw; font-size: 15px; background-color: rgba(72, 147, 153, 0.4); border-radius: 3px;"><i class="fas fa-user-circle"></i>&nbsp;{0}</div>',
-        args = {'Obywatel ['  .. id .. ']: Pokazuje Wizytówkę: ' .. name}
-    })
+    TriggerEvent('chatMessage',"^6Obywatel["  .. id .. "]^0:^6 Pokazuje Wizytówkę: " .. name )
+  elseif GetDistanceBetweenCoords(GetEntityCoords(Citizen.InvokeNative(0x43A66C31C68491C0, myId)), GetEntityCoords(Citizen.InvokeNative(0x43A66C31C68491C0, pid)), true) <= 19.999 then
+    if Citizen.InvokeNative(0xB8DFD30D6973E135, pid) then
+      TriggerEvent('chatMessage',"^6Obywatel["  .. id .. "]^0:^6 Pokazuje Wizytówkę: " .. name )
+    end
   end
 end)
 
-  RegisterNetEvent('esx_dowod:sendProximityMessage')
-  AddEventHandler('esx_dowod:sendProximityMessage',function(id, name, message)
+RegisterNetEvent('esx_dowod:sendProximityMessage')
+AddEventHandler('esx_dowod:sendProximityMessage',function(id, name, message)
     local myId = PlayerId()
     local pid = GetPlayerFromServerId(id)
     if pid == myId then 
       TriggerEvent('chat:addMessage', {
-        template = '<div style="padding: 0.4vw; margin: 0.5vw; font-size: 15px; background-color: rgba(29, 9, 38, 0.7); border-radius: 3px;"><i class="fas fa-user-circle"></i>&nbsp;{0} {1}</div>',
-       args = {'Obywatel [' ..  name .. ']:', message}
+       args = {'^6Obywatel[' ..  id .. ']', message }
     })
-    elseif GetDistanceBetweenCoords(GetEntityCoords(GetPlayerPed(myId)), GetEntityCoords(GetPlayerPed(pid)), true) < 10.0 then
-      TriggerEvent('chat:addMessage', {
-        template = '<div style="padding: 0.4vw; margin: 0.5vw; font-size: 15px; background-color: rgba(29, 9, 38, 0.7); border-radius: 3px;"><i class="fas fa-user-circle"></i>&nbsp;{0} {1}</div>',
-        args = {'Obywatel [' ..  name .. ']:', message}
-    })
+    elseif GetDistanceBetweenCoords(GetEntityCoords(Citizen.InvokeNative(0x43A66C31C68491C0, myId)), GetEntityCoords(Citizen.InvokeNative(0x43A66C31C68491C0, pid)), true) <= 19.999 then
+      if Citizen.InvokeNative(0xB8DFD30D6973E135, pid) then      
+        TriggerEvent('chat:addMessage', {
+            args = {'^6Obywatel[' ..  id .. ']', message }
+        })
+      end
     end
-  end)
-
+end)
 
 RegisterCommand('menuobywatela', function(source, args, raw) MenuObywatela() end)
 
@@ -106,6 +98,7 @@ function MenuObywatela()
     elements = {
       {label = ''..PlayerData.job.label..' - '..PlayerData.job.grade_label..'', value = 'none'},
       {label = '['..GetPlayerServerId(i)..'] - '..GetPlayerName(PlayerId())..'', value = 'none'},
+      {label = '-------------', value = 'none'},
       {label = 'Dokumenty Osobiste', value = 'dokumenty'},
       {label = 'Legitymacje', value = 'legitymacje'},
       {label = 'Dodatkowe', value = 'dodatki'},
@@ -235,12 +228,15 @@ end
     local pid = GetPlayerFromServerId(id)
     local mugshot, mugshotStr = ESX.Game.GetPedMugshot(GetPlayerPed(pid))
     if pid == myId then
-      TriggerEvent('esx:showAdvancedNotification', imie, data, dodatek, mugshotStr, 8)
-    elseif GetDistanceBetweenCoords(GetEntityCoords(GetPlayerPed(myId)), GetEntityCoords(GetPlayerPed(pid)), true) < 10.0 then
-      TriggerEvent('esx:showAdvancedNotification', imie, data, dodatek, mugshotStr, 8)
+      TriggerEvent('esx:showAdvancedNotification', imie, data, dodatek, 'CHAR_BLANK_ENTRY', 8)
+    elseif GetDistanceBetweenCoords(GetEntityCoords(Citizen.InvokeNative(0x43A66C31C68491C0, myId)), GetEntityCoords(Citizen.InvokeNative(0x43A66C31C68491C0, pid)), true) <= 19.999 then
+      if Citizen.InvokeNative(0xB8DFD30D6973E135, pid) then      
+        TriggerEvent('esx:showAdvancedNotification', imie, data, dodatek, 'CHAR_BLANK_ENTRY', 8)
+      end
     end
     UnregisterPedheadshot(mugshot)
   end)
+
 
   function OpenMenuLegitymacje()
   
@@ -311,22 +307,21 @@ AddEventHandler('esx:dowod_pokazdowod', function(id, imie, data, dodatek)
   local pid = GetPlayerFromServerId(id)
   local mugshot, mugshotStr = ESX.Game.GetPedMugshot(GetPlayerPed(pid))
   if pid == myId then
-    SetNotificationBackgroundColor(200)
-    TriggerEvent('esx:showAdvancedNotification', imie, data, dodatek, mugshotStr)
-		chowaniebronianim()
-		pokazdowodanim()
-		portfeldowodprop1()
-  elseif GetDistanceBetweenCoords(GetEntityCoords(GetPlayerPed(myId)), GetEntityCoords(GetPlayerPed(pid)), true) < 9.999 then
-    SetNotificationBackgroundColor(200)
-    TriggerEvent('esx:showAdvancedNotification', imie, data, dodatek, mugshotStr)
-
+    SetNotificationBackgroundColor(11)
+    TriggerEvent('FeedM:showAdvancedNotification', imie, data, dodatek, 'CHAR_BLANK_ENTRY', 15000, danger)
+	  chowaniebronianim()
+    pokazblachaanim()
+    
+  elseif GetDistanceBetweenCoords(GetEntityCoords(Citizen.InvokeNative(0x43A66C31C68491C0, myId)), GetEntityCoords(Citizen.InvokeNative(0x43A66C31C68491C0, pid)), true) <= 19.999 then
+		if Citizen.InvokeNative(0xB8DFD30D6973E135, pid) then
+      SetNotificationBackgroundColor(11)
+      TriggerEvent('FeedM:showAdvancedNotification', imie, data, dodatek, 'CHAR_BLANK_ENTRY', 15000, danger)
+    end
   end
   
   UnregisterPedheadshot(mugshot)
 
 end)
-
-
 
 RegisterNetEvent('esx:dowod_wiz')
 AddEventHandler('esx:dowod_wiz', function(id, imie, data, dodatek)
@@ -335,20 +330,20 @@ AddEventHandler('esx:dowod_wiz', function(id, imie, data, dodatek)
   local mugshot, mugshotStr = ESX.Game.GetPedMugshot(GetPlayerPed(pid))
   if pid == myId then
     SetNotificationBackgroundColor(11)
-    TriggerEvent('esx:showAdvancedNotification', imie, data, dodatek, mugshotStr)
-		chowaniebronianim()
-		pokazdowodanim()
-		portfeldowodprop1()
-  elseif GetDistanceBetweenCoords(GetEntityCoords(GetPlayerPed(myId)), GetEntityCoords(GetPlayerPed(pid)), true) < 9.999 then
-    SetNotificationBackgroundColor(11)
-    TriggerEvent('esx:showAdvancedNotification', imie, data, dodatek, mugshotStr)
-
+    TriggerEvent('FeedM:showAdvancedNotification', imie, data, dodatek, 'CHAR_BLANK_ENTRY', 15000, danger)
+	  chowaniebronianim()
+    pokazblachaanim()
+    
+  elseif GetDistanceBetweenCoords(GetEntityCoords(Citizen.InvokeNative(0x43A66C31C68491C0, myId)), GetEntityCoords(Citizen.InvokeNative(0x43A66C31C68491C0, pid)), true) <= 19.999 then
+		if Citizen.InvokeNative(0xB8DFD30D6973E135, pid) then
+      SetNotificationBackgroundColor(11)
+      TriggerEvent('FeedM:showAdvancedNotification', imie, data, dodatek, 'CHAR_BLANK_ENTRY', 15000, danger)
+    end
   end
   
   UnregisterPedheadshot(mugshot)
 
 end)
-
 
 RegisterNetEvent('esx:dowod_Notify')
 AddEventHandler('esx:dowod_Notify', function(id, imie, data, dodatek)
@@ -357,14 +352,15 @@ AddEventHandler('esx:dowod_Notify', function(id, imie, data, dodatek)
   local mugshot, mugshotStr = ESX.Game.GetPedMugshot(GetPlayerPed(pid))
   if pid == myId then
     SetNotificationBackgroundColor(11)
-    TriggerEvent('esx:showAdvancedNotification', imie, data, dodatek, mugshotStr)
-		chowaniebronianim()
-		pokazdowodanim()
-		portfeldowodprop1()
-  elseif GetDistanceBetweenCoords(GetEntityCoords(GetPlayerPed(myId)), GetEntityCoords(GetPlayerPed(pid)), true) < 9.999 then
-    SetNotificationBackgroundColor(11)
-    TriggerEvent('esx:showAdvancedNotification', imie, data, dodatek, mugshotStr)
-
+    TriggerEvent('FeedM:showAdvancedNotification', imie, data, dodatek, 'CHAR_BLANK_ENTRY', 15000, danger)
+	  chowaniebronianim()
+    pokazblachaanim()
+    
+  elseif GetDistanceBetweenCoords(GetEntityCoords(Citizen.InvokeNative(0x43A66C31C68491C0, myId)), GetEntityCoords(Citizen.InvokeNative(0x43A66C31C68491C0, pid)), true) <= 19.999 then
+		if Citizen.InvokeNative(0xB8DFD30D6973E135, pid) then
+      SetNotificationBackgroundColor(11)
+      TriggerEvent('FeedM:showAdvancedNotification', imie, data, dodatek, 'CHAR_BLANK_ENTRY', 15000, danger)
+    end
   end
   
   UnregisterPedheadshot(mugshot)
@@ -378,14 +374,15 @@ AddEventHandler('esx:dowod_mariuszek', function(id, imie, data, dodatek)
   local mugshot, mugshotStr = ESX.Game.GetPedMugshot(GetPlayerPed(pid))
   if pid == myId then
     SetNotificationBackgroundColor(11)
-    TriggerEvent('esx:showAdvancedNotification', imie, data, dodatek, mugshotStr)
+    TriggerEvent('FeedM:showAdvancedNotification', imie, data, dodatek, 'CHAR_BLANK_ENTRY', 15000, danger)
 	  chowaniebronianim()
     pokazblachaanim()
-    blachaprop1()
-  elseif GetDistanceBetweenCoords(GetEntityCoords(GetPlayerPed(myId)), GetEntityCoords(GetPlayerPed(pid)), true) < 9.999 then
-    SetNotificationBackgroundColor(11)
-    TriggerEvent('esx:showAdvancedNotification', imie, data, dodatek, mugshotStr)
-
+    
+  elseif GetDistanceBetweenCoords(GetEntityCoords(Citizen.InvokeNative(0x43A66C31C68491C0, myId)), GetEntityCoords(Citizen.InvokeNative(0x43A66C31C68491C0, pid)), true) <= 19.999 then
+		if Citizen.InvokeNative(0xB8DFD30D6973E135, pid) then
+      SetNotificationBackgroundColor(11)
+      TriggerEvent('FeedM:showAdvancedNotification', imie, data, dodatek, 'CHAR_BLANK_ENTRY', 15000, danger)
+    end
   end
   
   UnregisterPedheadshot(mugshot)
