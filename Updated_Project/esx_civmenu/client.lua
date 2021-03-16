@@ -1,8 +1,9 @@
 --[ esx_civmenu - powered by: https://szymczakovv.pl ]--
 -- Nazwa: esx_civmenu
 -- Autor: szymczakovv#1937
--- Data: 05/01/2021
--- Wersja: 2.1
+-- Data: 16/03/2021
+-- Wersja: 3.0
+
 
 ESX = nil
 
@@ -10,7 +11,7 @@ local PlayerData = {}
 local control = 121, -- Insert
 
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while ESX == nil do
     TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
         Citizen.Wait(0)
@@ -32,7 +33,7 @@ AddEventHandler('esx:setJob', function(job)
 	  PlayerData.name = name
 end)
 
-Citizen.CreateThread(function()
+CreateThread(function()
   while true do
     Citizen.Wait(1)
       if IsControlJustReleased(0, control) then
