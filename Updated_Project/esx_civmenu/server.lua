@@ -139,139 +139,68 @@ jestoc = '~g~Tak~s~'
 	end
 end
 
-TriggerEvent('es:addCommand', 'dowod', function(source, args, user)
-    local _source = source
-	local xPlayer = ESX.GetPlayerFromId(_source)
-
-    local lickaB = getlicenseB(source)
-    local lickaA = getlicenseA(source)
-    local lickaC = getlicenseC(source)
-	local lickaW = getlicenseW(source)
-
-	local name = getIdentity(source)
-
-	TriggerClientEvent('esx:dowod_pokazdowod', -1,_source,  name.firstname..' '..name.lastname, 'Data urodzin: ~y~' ..name.dateofbirth, '~s~Licencja Na Bron: '..jestw.. 'Prawo Jazdy Kat: '..jesta..' '..jestb..' '..jestc) 
-	TriggerClientEvent("pokazujedowod", -1, _source, name.firstname .. " ".. name.lastname, table.concat(args, " "))
-end)
-
-TriggerEvent('es:addCommand', 'wizytowka', function(source, args, user)
+RegisterServerEvent('dowod')
+AddEventHandler('dowod', function()
 	local _source = source
 	local xPlayer = ESX.GetPlayerFromId(_source)
-		
-		
-	 local name = getIdentity(source)
-	 local myjob
-		if job.name == 'police' then
-			myjob = 'LSPD'
-		elseif job.name == 'ambulance' then
-			myjob = 'EMS'
-		elseif job.name == 'taxi' then
-			myjob = 'Firma Taksówkarska'
-		elseif job.name == 'mecano' then
-			myjob = 'Mechanik'
+
+	local lickaB = getlicenseB(_source)
+	local lickaA = getlicenseA(_source)
+	local lickaC = getlicenseC(_source)
+	local lickaW = getlicenseW(_source)
+	local lickaZdrowie = getlicenseZdrowie(_source)
+	local lickaOC = getlicenseOC(_source)
+	local name = getIdentity(xPlayer.identifier)
+	
+	if name.firstname == nil then
+		name.firstname = 'X'
+	elseif name.lastname == nil then
+		name.lastname = 'X'
+	elseif name.dateofbirth == nil then
+		name.dateofbirth = 'X'
+	end
+
+	TriggerClientEvent('esx:dowod_mariuszek', -1,_source,  name.firstname..' '..name.lastname, 'Data urodzin: ~y~' ..name.dateofbirth, '~s~Licencja: '..jestw.. 'Prawo Jazdy: '..jesta..' '..jestb..' '..jestc.. 'Ubezp: ' ..jestzdrowie.. ' ' ..jestoc) 
+	TriggerClientEvent("pokazujedowod", -1, _source, name.firstname .. " ".. name.lastname)
+end)
+
+
+RegisterServerEvent('wizytowka')
+AddEventHandler('wizytowka', function()
+	local _source = source
+	local xPlayer = ESX.GetPlayerFromId(_source)	
+	local name = getIdentity(xPlayer.identifier)
+		if name.phone_number == nil then 
+			name.phone_number = "XXXXXX" 
 		end
 		
-		
-	TriggerClientEvent('esx:dowod_wiz', -1,_source, 'Praca:' ..myjob, name.firstname..' '..name.lastname, 'Numer Telefonu: ~y~'..name.phone_number, '')
-	TriggerClientEvent("pokazujewiz", -1, _source, name.firstname .. " - ".. name.phone_number, table.concat(args, " "))
+	TriggerClientEvent('esx:dowod_mariuszek', -1,_source, name.firstname.. ' ' ..name.lastname, ' Praca: ~y~'..xPlayer.job.label, 'Numer Telefonu: ~y~'..name.phone_number)
+	TriggerClientEvent("pokazujewiz", -1, _source, name.firstname .. " - ".. name.phone_number)
 end)
 
-TriggerEvent('es:addCommand', 'ubezpieczenie', function(source, args, user)
+RegisterServerEvent('odznaka')
+AddEventHandler('odznaka', function()
 	local _source = source
 	local xPlayer = ESX.GetPlayerFromId(_source)
-
-	local lickaZdrowie = getlicenseZdrowie(source)
-	local lickaOC = getlicenseOC(source)
-	local name = getIdentity(source)
-	TriggerClientEvent('esx:dowod_Notify', -1,_source, 'Karta ubezpieczeń', name.firstname..' '..name.lastname,  'Obezpieczenie OC: ' ..jestoc .. '~n~ Ubezpieczenie NW: ' ..jestzdrowie)
-end)
-
-TriggerEvent('es:addCommand', 'lspdubezpieczenie', function(source, args, user)
-	local _source = source
-	local xPlayer = ESX.GetPlayerFromId(_source)
-	local name = getIdentity(source)
-	local dane = name.firstname .. ' ' .. name.lastname .. '\n~r~[' .. name.job_callsing .. '~r~]'
-	local imie = name.firstname .. ' ' .. name.lastname
-	local lickaZdrowie = getlicenseZdrowie(source)
-	local lickaOC = getlicenseOC(source)
-	local message = 'Pokazuje ubezpiecznie służbowe:  [' .. name.job_callsing .. '] '  .. imie .. ''
-	TriggerClientEvent('esx_dowod:sendProximityMessage', -1, _source, _source, message)
-	TriggerClientEvent('esx:dowod_Notify', -1,_source, 'Karta ubezpieczenia służbowego',  dane .. ' ', 'Obezpieczenie OC: ~g~Tak~s~\nUbezpieczenie NW: ~g~Tak~s~')
-end)
-
-TriggerEvent('es:addCommand', 'lspd', function(source, args, user)
-	local _source = source
-	local xPlayer = ESX.GetPlayerFromId(_source)
-	local name = getIdentity(source)
+	local name = getIdentity(xPlayer.identifier)
 	local imie = name.firstname .. ' ' .. name.lastname
 	local job = xPlayer.job
 	local stopien = job.grade_label
-	local sing = name.job_callsing
+
 	local message = 'Pokazuje odznakę policjanta:  [' .. sing .. '] '  .. imie .. ' - ' .. stopien ..' '
 	local czy_wazna
+	local sing = name.job_callsing
+	if sing == nil then
+	      sing = "X"
+	end
 	if job.name == "police" then
 		czy_wazna = "~g~Tak"
 	else
 		job.grade_label = "~r~Brak informacji"
 		czy_wazna = "~r~Nie"
 	end
-	TriggerClientEvent('esx:dowod_mariuszek', -1,_source, '~w~'..name.firstname..' '..name.lastname,'Stopień: ~b~'..stopien.. '\n~r~['.. sing .. ']', '~n~~s~Odznaka jest ważna: '..czy_wazna)
+
+	TriggerClientEvent('esx:dowod_mariuszek', -1,_source, '~w~'..name.firstname..' '..name.lastname,'Stopień: ~b~'..stopien, '\n~r~['.. sing .. ']', '~w~~s~\nOdznaka jest ważna: '..czy_wazna)
 	TriggerClientEvent('esx_dowod:sendProximityMessage', -1, _source, _source, message)
 end)
 
-TriggerEvent('es:addCommand', 'lscs', function(source, args, user)
-	local _source = source
-	local xPlayer = ESX.GetPlayerFromId(_source)
-	local name = getIdentity(source)
-	local imie = name.firstname .. ' ' .. name.lastname
-	local job = xPlayer.job
-	local stopien = job.grade_label
-	local message = 'Pokazuje Plakietkę LSCS ' .. imie .. ' '.. stopien
-	local czy_wazna
-	if job.name == "mecano" then
-		czy_wazna = "~g~Tak"
-	else
-		job.grade_label = "~r~Brak informacji"
-		czy_wazna = "~r~Nie"
-	end
-	TriggerClientEvent('esx:dowod_mariuszek', -1,_source, '~h~'..name.firstname..' '..name.lastname,'Plakietka ~o~LSCS','Stopień: ~b~'..job.grade_label..'~n~~s~Plakietka jest ważna: '..czy_wazna)
-	TriggerClientEvent('esx_dowod:sendProximityMessage', -1, _source, _source, message)
-end)
-
-TriggerEvent('es:addCommand', 'lssd', function(source, args, user)
-	local _source = source
-	local xPlayer = ESX.GetPlayerFromId(_source)
-	local name = getIdentity(source)
-	local imie = name.firstname .. ' ' .. name.lastname
-	local job = xPlayer.job
-	local stopien = job.grade_label
-	local message = 'Pokazuje Odznakę LSSD ' .. imie .. ' '.. stopien
-	local czy_wazna
-	if job.name == "sheriff" then
-		czy_wazna = "~g~Tak"
-	else
-		job.grade_label = "~r~Brak informacji"
-		czy_wazna = "~r~Nie"
-	end
-	TriggerClientEvent('esx:dowod_mariuszek', -1,_source,  'Odznaka Sheriff'..name.firstname..' '..name.lastname,'Stopień: ~b~'..stopien.. ' ~r~['..name.job_callsing.. ']', '~n~~s~Odznaka jest ważna: '..czy_wazna)
-	TriggerClientEvent('esx_dowod:sendProximityMessage', -1, _source, _source, message)
-end)
-
-TriggerEvent('es:addCommand', 'ems', function(source, args, user)
-	local _source = source
-	local xPlayer = ESX.GetPlayerFromId(_source)
-	local name = getIdentity(source)
-	local imie = name.firstname .. ' ' .. name.lastname
-	local job = xPlayer.job
-	local stopien = job.grade_label
-	local message = 'Pokazuje Legitymację EMS ' .. imie .. ' '.. stopien
-	local czy_wazna
-	if job.name == "ambulance" then
-		czy_wazna = "~g~Tak"
-	else
-		job.grade_label = "~r~Brak informacji"
-		czy_wazna = "~r~Nie"
-	end
-	TriggerClientEvent('esx:dowod_mariuszek', -1,_source, '~h~'..name.firstname..' '..name.lastname,'Legitymacja ~p~EMS','~w~Stopień: ~b~'..job.grade_label..'~n~~s~Legitymacja jest ważna: '..czy_wazna)
-	TriggerClientEvent('esx_dowod:sendProximityMessage', -1, _source, _source, message)
-end)
