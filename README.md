@@ -2,7 +2,7 @@
 
 # Szymczakovv esx_evidence v3
 [![Paypal Doante](https://img.shields.io/badge/paypal-donate-blue.svg)](https://www.paypal.me/oplatyprimerp)
-[![Discord](https://discordapp.com/api/guilds/252317073814978561/embed.png)](https://discord.gg/wrSqK6k)
+[![Discord](https://discordapp.com/api/guilds/690686401469087756/embed.png)](https://discord.gg/wrSqK6k)
 
 Fivem esx_civilian_menu 3.0 with Police/Sheriff Badge, Insurance, Badge for Mecano and EMS, [etc.]
 Jeżeli chcesz mieć w pełni działające odznaki musisz nadać callsing np. [Yankee-01] aby to uczynić dodaj do bazy danych następujęce rzeczy;
