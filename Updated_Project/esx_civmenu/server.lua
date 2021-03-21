@@ -200,13 +200,12 @@ AddEventHandler('odznaka', function()
 	local imie = name.firstname .. ' ' .. name.lastname
 	local job = xPlayer.job
 	local stopien = job.grade_label
-
-	local message = 'Pokazuje odznakę policjanta:  [' .. sing .. '] '  .. imie .. ' - ' .. stopien ..' '
-	local czy_wazna
 	local sing = name.job_callsing
 	if sing == nil then
 	      sing = "X"
 	end
+	local message = 'Pokazuje odznakę policjanta:  [' .. sing .. '] '  .. imie .. ' - ' .. stopien ..' '
+	local czy_wazna
 	if job.name == "police" then
 		czy_wazna = "~g~Tak"
 	else
