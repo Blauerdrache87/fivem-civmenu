@@ -13,7 +13,7 @@ Potem nadaj graczu callsing przykładowo wyszukaj kogoś po nicku i wpisz Yankee
 
 Zmiany:
 ```
-[❗ 16.03.2021 >  UPDATE ❗]
+[❗ 16.03.2021 >  UPDATE 3.0 ❗]
 [/] Przystosowano pod ESX 1.2.0--final
 [/] Przystosowano pod infinity
 [/] Zamiana executecommand na triggery
